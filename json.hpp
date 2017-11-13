@@ -10,7 +10,7 @@
 
 struct  Value{
 
-	virtual void print() = 0;
+	virtual void print() const= 0;
 
 	virtual ~Value() = default; 
 };
@@ -22,7 +22,7 @@ struct Array : Value{
 		: vals(vals)
 	{ }
 
-	void print() override {
+	void print() const override {
 		std::cout << '[';
 		for (auto iter = vals.begin(); iter != vals.end(); ++iter){
 			(*iter)->print();
@@ -42,13 +42,59 @@ struct Array : Value{
 	
 };
 
-struct String : Value {
+struct Null : Value{
 
+	Null() = default;
 
+	void print() const override{
+		std::cout << "null";
+	}
 
 };
 
- 
+struct Bool : Value{
+	Bool(bool v)
+		: val(v)
+	{ }
+
+	void print() const override{
+		if (val)
+			std::cout << "true";
+		else
+			std::cout << "false";
+		}
+
+	bool val;
+
+};
+
+struct Number : Value {
+
+	Number(double d) 
+		: val(d)
+	{ }
+
+	void print() const override {
+		std::cout << val;
+	}
+
+	double val;
+};
+
+struct String : Value{
+
+	String(const std::string& str)
+		: val(str)
+	{ }
+
+	void print() const override {
+		std::cout << val;
+	}
+
+	std::string val;
+};
+
+
 struct Object{
 
 	Object() { }
